@@ -1,0 +1,16 @@
+class Player {
+  int x = 100;
+  method move(int dx) { x += dx; }
+  method draw() { Graphics.rect(x, 100, 40, 40, color.green); }
+}
+
+main() {
+  Player p = new Player();
+  loop() {
+    p.draw();
+    if (Input.left()) p.move(-5);
+    if (Input.right()) p.move(5);
+    Graphics.refresh();
+    sleep(16);
+  }
+}
