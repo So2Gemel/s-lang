@@ -1,0 +1,4 @@
+main() {
+  HookTraceLite.attach("libapp.so", "open");
+  print("🚨 يتم مراقبة دالة open الآن!");
+}
