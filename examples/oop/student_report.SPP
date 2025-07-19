@@ -1,0 +1,28 @@
+class Student {
+    let name: string;
+    let grades: list<float>;
+
+    func init(n: string, g: list<float>) {
+        self.name = n;
+        self.grades = g;
+    }
+
+    func average(): float {
+        let sum: float = 0;
+        for g in self.grades {
+            sum = sum + g;
+        }
+        return sum / len(self.grades);
+    }
+
+    func report() {
+        print("اسم الطالب: " + self.name);
+        print("عدد المواد: " + str(len(self.grades)));
+        print("المعدل: " + str(self.average()));
+    }
+}
+
+func main() {
+    let s: Student = Student("خالد", [90.5, 87.0, 93.0]);
+    s.report();
+}
