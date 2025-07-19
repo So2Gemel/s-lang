@@ -1,0 +1,5 @@
+main() {
+  string ip = "google.com";
+  string result = shell.exec("ping -c 1 " + ip);
+  print(result);
+}
