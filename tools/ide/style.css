@@ -1,0 +1,16 @@
+body {
+    font-family: 'Courier New', monospace;
+    background-color: #282c34;
+    color: #eeeeee;
+    margin: 0;
+    padding: 20px;
+}
+textarea {
+    width: 100%;
+    height: 500px;
+    background-color: #1e1e1e;
+    color: #00ff7f;
+    border: none;
+    padding: 10px;
+    font-size: 14px;
+}
