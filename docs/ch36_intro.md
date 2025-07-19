@@ -13,7 +13,7 @@
   - سهل الترجمة 📦
   - قابل للتوسع 🌱
 
-`spp
+```spp
 class Engine {
   method start() {
     safe {
@@ -21,7 +21,7 @@ class Engine {
     }
   }
 }
-`
+```
 
 ---
 
@@ -32,9 +32,9 @@ class Engine {
   2. Interpreter → ينفذ الكود مباشرة أو يحوّله
   3. Converter → يحوّل إلى لغات أخرى مثل C, Rust, Python، عند الطلب
 
-`spp
+```spp
 convert("main.spp", to="go") → ينتج ملف Go جاهز
-`
+```
 
 ---
 
@@ -54,11 +54,11 @@ convert("main.spp", to="go") → ينتج ملف Go جاهز
   - دوال ممنوعة (shell, asm) تُراقب عبر أداة LiveGuard
   - التوقيع الرقمي يتم من خلال Signer
 
-`spp
+```spp
 if (LiveGuard.detect(event)) {
   system.lock("module");
 }
-`
+```
 
 ---
 
