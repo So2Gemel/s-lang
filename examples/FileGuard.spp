@@ -1,0 +1,8 @@
+string hash = system.hash("config.txt");
+main() {
+  if (system.hash("config.txt") != hash) {
+    print("⚠️ الملف تم تعديله!");
+  } else {
+    print("✅ الملف سليم");
+  }
+}
