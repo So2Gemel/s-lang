@@ -25,6 +25,19 @@ def evaluate(expr: dict):
             return val
     return None
 
+def load_core_library(path):
+    slib = {}
+    with open(path, "r", encoding="utf-8") as file:
+        for line in file:
+            if line.strip().startswith("func"):
+                name = line.split("(")[0].replace("func", "").strip()
+                slib[name] = {"signature": line.strip()}
+    return slib
+
+# تحميل المكتبة
+builtins = load_core_library("../stdlib/core.slib")
+
 if __name__ == "__main__":
     ast = load_ast("ast_samples/main_ast.json")
     interpret(ast)
+
