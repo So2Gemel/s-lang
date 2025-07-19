@@ -7,7 +7,7 @@
 
 1️⃣ أداة تحليل التغيرات – FileIntegrity
 
-`spp
+```spp
 class FileIntegrity {
   map<string, string> originalHashes;
 
@@ -26,7 +26,7 @@ class FileIntegrity {
     }
   }
 }
-`
+```
 
 📦 تستخدم لحماية التطبيقات من التعديل غير المصرّح به.
 
@@ -34,7 +34,7 @@ class FileIntegrity {
 
 2️⃣ أداة تعقب المستخدمين – UserTrace
 
-`spp
+```spp
 class UserTrace {
   method logSession() {
     string user = shell.exec("whoami");
@@ -42,7 +42,7 @@ class UserTrace {
     system.write("log.txt", "User: " + user + "\nIP: " + ip + "\n");
   }
 }
-`
+```
 
 🔍 تجمع معلومات الجلسة وتُسجلها آليًا للتحقيق الأمني لاحقًا.
 
@@ -50,7 +50,7 @@ class UserTrace {
 
 3️⃣ أداة مراقبة النشاط – MonitorCore
 
-`spp
+```spp
 class MonitorCore {
   list<string> keywords = ["hack", "inject", "steal"];
 
@@ -62,7 +62,7 @@ class MonitorCore {
     }
   }
 }
-`
+```
 
 👁️ تتفاعل مع المدخلات وتكشف النشاطات المشبوهة داخل الواجهة.
 
@@ -70,7 +70,7 @@ class MonitorCore {
 
 4️⃣ أداة كشف الاختراق المباشر – LiveGuard
 
-`spp
+```spp
 class LiveGuard {
   int suspiciousCounter = 0;
 
@@ -84,7 +84,7 @@ class LiveGuard {
     }
   }
 }
-`
+```
 
 🔒 أداة تتفاعل مع الأحداث فورًا وتفعل إجراء حماية داخلي مثل قفل ملفات أو إنهاء العمليات.
 
