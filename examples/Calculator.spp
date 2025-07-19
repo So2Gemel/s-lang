@@ -1,0 +1,7 @@
+method add(int a, int b) { return a + b; }
+method sub(int a, int b) { return a - b; }
+
+main() {
+  print("Add: " + add(10, 5));
+  print("Sub: " + sub(8, 3));
+}
