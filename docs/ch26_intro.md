@@ -7,7 +7,7 @@
 
 🛠️ 1️⃣ أداة "المفاتيح الذكية" – SmartKey
 
-`spp
+```spp
 class SmartKey {
   string key = "s++Secure123";
 
@@ -19,7 +19,7 @@ class SmartKey {
     key = "s++" + rand(1000, 9999);
   }
 }
-`
+```
 
 🔑 تستخدم هذه الأداة لحماية الوصول إلى ميزات معينة داخل التطبيق مثل الإعدادات أو المشاريع.
 
@@ -27,7 +27,7 @@ class SmartKey {
 
 🛡️ 2️⃣ أداة كشف التعديل – Tamper Check
 
-`spp
+```spp
 class TamperCheck {
   method hash(string path) {
     return system.hash(path);
@@ -37,7 +37,7 @@ class TamperCheck {
     return system.hash(path) == original;
   }
 }
-`
+```
 
 🧪 تحمي ملفات التطبيق من التلاعب، وتُستخدم أثناء التشغيل للتحقق من التوقيع.
 
@@ -45,7 +45,7 @@ class TamperCheck {
 
 🔒 3️⃣ أداة كلمة مرور بسيطة – Password Tool
 
-`spp
+```spp
 class PasswordTool {
   string hashed;
 
@@ -57,7 +57,7 @@ class PasswordTool {
     return system.hash(input) == hashed;
   }
 }
-`
+```
 
 🧠 تنشئ هذه الأداة كلمة مرور قابلة للتحقق لاحقًا بدون حفظ النص الحقيقي.
 
@@ -65,7 +65,7 @@ class PasswordTool {
 
 🌈 4️⃣ أداة واجهة سريعة – QuickUI
 
-`spp
+```spp
 class QuickUI {
   method drawTitle(string txt) {
     Graphics.text(txt, 150, 20, color.cyan);
@@ -76,7 +76,7 @@ class QuickUI {
     b.onClick = onClick;
   }
 }
-`
+```
 
 🎨 مفيدة لإنشاء واجهات بدون تعقيد… يمكن استخدامها في الألعاب أو التطبيقات أو أدوات التعليم.
 
