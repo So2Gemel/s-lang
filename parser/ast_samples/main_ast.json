@@ -1,29 +1,24 @@
-[
-  {
-    "type": "FunctionDeclaration",
-    "name": "main",
-    "args": [],
-    "body": [
-      {
-        "type": "VariableDeclaration",
-        "name": "name",
-        "datatype": "string",
-        "value": "So2_gemel"
-      },
-      {
-        "type": "PrintStatement",
-        "value": {
-          "type": "Concatenation",
-          "left": {
-            "type": "StringLiteral",
-            "value": "مرحبًا يا "
-          },
-          "right": {
-            "type": "Identifier",
-            "name": "name"
-          }
-        }
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "LetDeclaration",
+      "name": "x",
+      "datatype": "int",
+      "value": {
+        "type": "Literal",
+        "value": "5"
       }
-    ]
-  }
-]
+    },
+    {
+      "type": "CallExpression",
+      "name": "print",
+      "args": [
+        {
+          "type": "Variable",
+          "name": "x"
+        }
+      ]
+    }
+  ]
+}
