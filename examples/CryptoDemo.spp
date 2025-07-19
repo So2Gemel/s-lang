@@ -1,0 +1,12 @@
+method xor(string txt, string key) {
+  string out = "";
+  for (int i = 0; i < txt.length(); i++) {
+    out += chr(ord(txt[i]) ^ ord(key[i % key.length()]));
+  }
+  return out;
+}
+
+main() {
+  string encoded = xor("SLang", "123");
+  print("Encrypted: " + encoded);
+}
