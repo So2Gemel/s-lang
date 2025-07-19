@@ -7,7 +7,7 @@
 
 1️⃣ أداة مراقبة المنافذ – PortGuardian
 
-`spp
+```spp
 class PortGuardian {
   list<int> ports = [22, 80, 443];
 
@@ -18,7 +18,7 @@ class PortGuardian {
     }
   }
 }
-`
+```
 
 🔎 تفحص المنافذ المفتوحة في السيرفر وتعرض حالتها، تمامًا مثل nmap أو netcat.
 
@@ -26,7 +26,7 @@ class PortGuardian {
 
 2️⃣ أداة كشف النشاط الغريب – TrafficMonitor
 
-`spp
+```spp
 class TrafficMonitor {
   method watch() {
     string logs = shell.exec("netstat -an");
@@ -37,7 +37,7 @@ class TrafficMonitor {
     }
   }
 }
-`
+```
 
 📡 تكشف عن الاتصالات النشطة أو غير المصرّح بها.
 
@@ -45,7 +45,7 @@ class TrafficMonitor {
 
 3️⃣ أداة تشفير البيانات – CryptoShield
 
-`spp
+```spp
 class CryptoShield {
   method encrypt(string msg, string key) {
     string out = "";
@@ -59,7 +59,7 @@ class CryptoShield {
     return encrypt(enc, key); // XOR reversible
   }
 }
-`
+```
 
 🔐 تستخدم XOR بسيط، ويمكن لاحقًا ربطه بـ AES أو أي خوارزمية داخل .slibcrypto.so.
 
@@ -67,7 +67,7 @@ class CryptoShield {
 
 4️⃣ حماية الشبكة من الاختراق – NetDefender
 
-`spp
+```spp
 class NetDefender {
   method firewall(string ip) {
     shell.exec("iptables -A INPUT -s " + ip + " -j DROP");
@@ -78,7 +78,7 @@ class NetDefender {
     shell.exec("iptables -A INPUT -s " + ip + " -j ACCEPT");
   }
 }
-`
+```
 
 🧱 تبني قواعد لمنع الاتصالات الضارة وحماية الشبكة من التسللات.
 
@@ -86,7 +86,7 @@ class NetDefender {
 
 5️⃣ أداة تشفير كلمات المرور – HashLocker
 
-`spp
+```spp
 class HashLocker {
   method lock(string pass) {
     return system.hash(pass + "::S/S++Secure");
@@ -96,7 +96,7 @@ class HashLocker {
     return lock(input) == storedHash;
   }
 }
-`
+```
 
 💾 مثالية لحماية الملفات، إعدادات السيرفر، أو تسجيل الدخول للتطبيقات.
 
