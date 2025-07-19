@@ -1,0 +1,4 @@
+main() {
+  Button run = new Button("تشغيل", 100, 100, 140);
+  run.onClick = () => { print("✅ بدأ التشغيل!"); };
+}
