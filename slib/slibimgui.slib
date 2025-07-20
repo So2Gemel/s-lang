@@ -1,0 +1,72 @@
+module slibimgui
+
+// 🪟 بداية نافذة
+method begin(string title) {
+  ImGuiBegin(title);
+}
+
+// 🧱 نهاية نافذة
+method end() {
+  ImGuiEnd();
+}
+
+// 📄 عرض نص
+method text(string content) {
+  ImGuiText(content);
+}
+
+// ✍️ مدخل نصي
+method input(string label, string defaultText = "") {
+  return ImGuiInput(label, defaultText);
+}
+
+// 🔘 زر قابل للنقر
+method button(string label) {
+  return ImGuiButton(label);
+}
+
+// 🎚️ شريط تمرير
+method slider(string label, int min, int max, int value = 0) {
+  return ImGuiSlider(label, min, max, value);
+}
+
+// ✅ اختيار منطقي
+method checkbox(string label, bool state = false) {
+  return ImGuiCheckbox(label, state);
+}
+
+// 🔗 قائمة منسدلة
+method combo(string label, list<string> items, int selected = 0) {
+  return ImGuiCombo(label, items, selected);
+}
+
+// 🧩 لون قابل للتخصيص
+method colorPicker(string label, string defColor = "#ffffff") {
+  return ImGuiColor(label, defColor);
+}
+
+// 📦 نافذة عائمة
+method popup(string id, string message) {
+  if (ImGuiBeginPopup(id)) {
+    text(message);
+    if (button("❌ إغلاق")) {
+      ImGuiClosePopup(id);
+    }
+    end();
+  }
+}
+
+// 🖼️ تقسيم أفقي
+method separator() {
+  ImGuiSeparator();
+}
+
+// 🔁 جدول مختصر
+method table(string[] headers, list<list<string>> rows) {
+  ImGuiTableBegin(headers.length());
+  ImGuiTableHeaders(headers);
+  foreach (r in rows) {
+    ImGuiTableRow(r);
+  }
+  ImGuiTableEnd();
+}
