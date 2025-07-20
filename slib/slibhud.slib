@@ -1,0 +1,63 @@
+module slibhud
+
+// 🔰 عرض نص HUD في المكان المطلوب
+method text(string content, int x, int y, string col = "white") {
+  HUD.drawText(content, x, y, col);
+}
+
+// 📊 عرض قيمة متغيرة ديناميكية
+method value(string label, any val, int x, int y, string col = "cyan") {
+  string info = label + ": " + str(val);
+  HUD.drawText(info, x, y, col);
+}
+
+// 🎯 عرض FPS ووقت التشغيل
+method fps(int x = 10, int y = 10) {
+  float f = system.fps();
+  HUD.drawText("⚡ FPS: " + str(f), x, y, "green");
+}
+
+method time(int x = 10, int y = 30) {
+  string t = system.time();
+  HUD.drawText("🕓 وقت التشغيل: " + t, x, y, "yellow");
+}
+
+// 🔎 عرض حالة علمية أو متغير منطقي
+method status(string name, bool ok, int x, int y) {
+  string msg = name + ": " + (ok ? "✅" : "❌");
+  HUD.drawText(msg, x, y, ok ? "lime" : "red");
+}
+
+// 🧭 عرض نتائج تصنيف أو تنبؤ
+method classifyResult(string label, string result, int x, int y) {
+  HUD.drawText(label + " → " + result, x, y, "orange");
+}
+
+// 📦 عرض قائمة معلومات متغيرة
+method list(map<string, any> items, int x = 10, int y = 10) {
+  int dy = 0;
+  foreach (k in items.keys()) {
+    HUD.drawText(k + ": " + str(items[k]), x, y + dy, "white");
+    dy += 20;
+  }
+}
+
+// 🎨 تخصيص لون الخلفية
+method setBackground(string col) {
+  HUD.background(col);
+}
+
+// 🎮 مسح HUD
+method clear() {
+  HUD.clear();
+}
+
+// 🧩 عرض نافذة HUD ثابتة
+method frame(string title, int x, int y, int w = 180, int h = 120, string col = "gray") {
+  HUD.frame(title, x, y, w, h, col);
+}
+
+// 🧷 رسم مؤشر حالة مصغّر
+method dot(bool state, int x, int y, string active = "green", string inactive = "red") {
+  HUD.circle(x, y, 6, state ? active : inactive);
+}
