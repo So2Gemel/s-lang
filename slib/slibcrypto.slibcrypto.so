@@ -1,0 +1,83 @@
+module slibcrypto
+
+// 🔐 تشفير XOR بسيط
+method xor(string txt, string key) {
+  string out = "";
+  for (int i = 0; i < txt.length(); i++) {
+    out += chr(ord(txt[i]) ^ ord(key[i % key.length()]));
+  }
+  return out;
+}
+
+// 🔐 تشفير XOR + HEX
+method xorHex(string txt, string key) {
+  string xored = xor(txt, key);
+  string hex = "";
+  foreach (c in xored) {
+    hex += hexcode(ord(c));
+  }
+  return hex;
+}
+
+// 🔐 تشفير XOR + Base64
+method xorBase64(string txt, string key) {
+  string xored = xor(txt, key);
+  return base64.encode(xored);
+}
+
+// 🧬 توليد مفتاح ديناميكي
+method generateKey(int length = 16) {
+  string charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%";
+  string key = "";
+  for (int i = 0; i < length; i++) {
+    int index = shell.exec("echo $RANDOM") % charset.length();
+    key += charset[index];
+  }
+  return key;
+}
+
+// 🧾 توقيع رقمي مبسّط
+method sign(string data, string key) {
+  return xorHex(data, key).substr(0, 32);
+}
+
+method verifySign(string data, string key, string signature) {
+  return sign(data, key) == signature;
+}
+
+// 🔍 تحليل المحتوى
+method hash(string txt) => system.hash(txt);
+
+method checksum(string txt) {
+  int sum = 0;
+  foreach (c in txt) sum += ord(c);
+  return sum;
+}
+
+method fileSignature(string path, string key) {
+  string content = system.read(path);
+  return sign(content, key);
+}
+
+method compareFiles(string a, string b) {
+  return system.hash(system.read(a)) == system.hash(system.read(b));
+}
+
+// 🔐 تشفير ملف بالكامل
+method encryptFile(string path, string key) {
+  string data = system.read(path);
+  string enc = xorBase64(data, key);
+  system.write(path + ".enc", enc);
+}
+
+method decryptFile(string encPath, string key) {
+  string enc = system.read(encPath);
+  string data = base64.decode(enc);
+  string out = xor(data, key);
+  system.write(encPath.replace(".enc", ".dec"), out);
+}
+
+// 🛡️ اختبار مفتاح فعّال
+method isWeakKey(string key) {
+  return key.length() < 6 || key == "123456" || key == "password";
+}
