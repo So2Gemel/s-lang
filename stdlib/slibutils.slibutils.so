@@ -1,1 +1,60 @@
+module slibutils
 
+// 🔍 أدوات النصوص والتحليل
+method countWords(string txt) => txt.split(" ").length();
+method reverse(string txt) {
+  string out = "";
+  for (int i = txt.length() - 1; i >= 0; i--) out += txt[i];
+  return out;
+}
+
+method isAlpha(string txt) {
+  foreach (c in txt) {
+    if (!isLetter(c)) return false;
+  }
+  return true;
+}
+
+method removeSpaces(string txt) => txt.replace(" ", "");
+
+// 🧠 أدوات منطقية رقمية
+method isEven(int x) => x % 2 == 0;
+method isOdd(int x) => x % 2 != 0;
+method isPrime(int n) {
+  if (n <= 1) return false;
+  for (int i = 2; i <= sqrt(n); i++) {
+    if (n % i == 0) return false;
+  }
+  return true;
+}
+
+method clamp(int val, int min, int max) {
+  if (val < min) return min;
+  if (val > max) return max;
+  return val;
+}
+
+// 🗂️ تحليل الملفات والمحتوى
+method containsKeyword(string path, string word) {
+  string data = system.read(path);
+  return data.contains(word);
+}
+
+method getFileLines(string path) => system.read(path).split("\n");
+
+method countLines(string path) => getFileLines(path).length();
+
+// 🔐 أدوات تشفير XOR بسيطة
+method xor(string txt, string key) {
+  string out = "";
+  for (int i = 0; i < txt.length(); i++) {
+    out += chr(ord(txt[i]) ^ ord(key[i % key.length()]));
+  }
+  return out;
+}
+
+// 🧩 أدوات تحويل وتعريف
+method toInt(string s) => int(s);
+method toFloat(string s) => float(s);
+method toBool(string s) => s == "true";
+method typeOf(any x) => typeof(x);
