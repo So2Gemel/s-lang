@@ -1,1 +1,60 @@
 
+module slibnet
+
+// 🌐 طلبات HTTP الأساسية
+method get(string url) => shell.exec("curl -s " + url);
+
+method post(string url, map<string, string> data) {
+  string body = "";
+  foreach (k in data.keys()) {
+    body += k + "=" + data[k] + "&";
+  }
+  return shell.exec("curl -s -X POST -d '" + body + "' " + url);
+}
+
+// 📥 تحميل ملف من الإنترنت
+method download(string url, string outPath = "download.bin") {
+  shell.exec("curl -o " + outPath + " " + url);
+  return outPath;
+}
+
+// 📡 فحص الشبكة: Ping واختبار اتصال
+method ping(string host) => shell.exec("ping -c 1 " + host);
+method isOnline(string url = "https://google.com") {
+  string res = shell.exec("curl -s --head " + url + " | grep HTTP");
+  return res.contains("200 OK") || res.contains("302 Found");
+}
+
+// 🔑 تخصيص رؤوس HTTP
+method getWithHeaders(string url, map<string, string> headers) {
+  string headerStr = "";
+  foreach (k in headers.keys()) {
+    headerStr += "-H \"" + k + ": " + headers[k] + "\" ";
+  }
+  return shell.exec("curl -s " + headerStr + url);
+}
+
+// 🔁 دعم WebSocket الأولي (تجريبي)
+method wsConnect(string host, int port) {
+  return shell.exec("websocat ws://" + host + ":" + port);
+}
+
+// 🧾 تحليل HTTP
+method getHeaders(string url) {
+  return shell.exec("curl -sI " + url);
+}
+
+method getStatusCode(string url) {
+  string res = shell.exec("curl -s -o /dev/null -w '%{http_code}' " + url);
+  return int(res);
+}
+
+// 🕵️ فحص DNS و IP
+method getIP(string domain) => shell.exec("ping -c 1 " + domain + " | grep PING").split(" ")[2].replace("(", "").replace(")", "");
+method resolveDNS(string domain) => shell.exec("nslookup " + domain);
+
+// 🧠 دعم JSON في الردود (تجريبي باستخدام jsoncpp)
+method getJSON(string url) {
+  string raw = shell.exec("curl -s " + url);
+  return jsoncpp.parse(raw); // في حال jsoncpp مثبتة داخل البيئة
+}
