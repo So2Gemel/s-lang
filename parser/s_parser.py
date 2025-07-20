@@ -1,59 +1,86 @@
-import json
+class Parser {
+  list<string> tokens;
+  int index = 0;
 
-def tokenize(code: str) -> list:
-    """
-    تحويل الكود إلى سلسلة من الرموز (tokens)
-    """
-    tokens = code.replace("(", " ( ").replace(")", " ) ").split()
-    return tokens
+  method tokenize(string code) {
+    tokens = code.split(" ");
+    index = 0;
+  }
 
-def parse_tokens(tokens: list) -> dict:
-    """
-    بناء شجرة AST من الرموز، بشكل بدائي للتجربة
-    """
-    ast = {
-        "type": "Program",
-        "body": []
+  method next() {
+    if (index < tokens.length()) {
+      return tokens[index++];
     }
-    i = 0
-    while i < len(tokens):
-        if tokens[i] == "let":
-            var_name = tokens[i+1]
-            var_type = tokens[i+3]
-            var_value = tokens[i+5]
-            ast["body"].append({
-                "type": "LetDeclaration",
-                "name": var_name,
-                "datatype": var_type,
-                "value": {
-                    "type": "Literal",
-                    "value": var_value
-                }
-            })
-            i += 6
-        elif tokens[i] == "print":
-            ast["body"].append({
-                "type": "CallExpression",
-                "name": "print",
-                "args": [{
-                    "type": "Variable",
-                    "name": tokens[i+1]
-                }]
-            })
-            i += 2
-        else:
-            i += 1
-    return ast
+    return null;
+  }
 
-def save_ast(ast: dict, path: str):
-    with open(path, "w", encoding="utf-8") as file:
-        json.dump(ast, file, indent=4, ensure_ascii=False)
+  method peek() {
+    if (index < tokens.length()) {
+      return tokens[index];
+    }
+    return null;
+  }
 
-def parse_and_save(code: str, path: str):
-    tokens = tokenize(code)
-    ast = parse_tokens(tokens)
-    save_ast(ast, path)
+  method parse(string code) {
+    tokenize(code);
+    AST tree = new AST();
 
-if __name__ == "__main__":
-    sample_code = "let x: int = 5; print x"
-    parse_and_save(sample_code, "ast_samples/main_ast.json")
+    while (peek() != null) {
+      tree.add(parseStatement());
+    }
+
+    return tree;
+  }
+
+  method parseStatement() {
+    string token = next();
+
+    match token {
+      case "print": return parsePrint();
+      case "method": return parseMethod();
+      case "class": return parseClass();
+      case "if": return parseIf();
+      case "go": return parseGoBlock();
+      case "safe": return parseSafeBlock();
+      case "asm": return parseAsmBlock();
+      case else: return parseExpression(token);
+    }
+  }
+
+  method parsePrint() {
+    string value = next();
+    return ASTNode("Print", value);
+  }
+
+  method parseMethod() {
+    string name = next();
+    string args = next(); // Simplified
+    return ASTNode("Method", name + ":" + args);
+  }
+
+  method parseClass() {
+    string name = next();
+    return ASTNode("Class", name);
+  }
+
+  method parseIf() {
+    string condition = next();
+    return ASTNode("If", condition);
+  }
+
+  method parseGoBlock() {
+    return ASTNode("GoBlock", "async");
+  }
+
+  method parseSafeBlock() {
+    return ASTNode("SafeBlock", "protected");
+  }
+
+  method parseAsmBlock() {
+    return ASTNode("AsmBlock", "low-level");
+  }
+
+  method parseExpression(string token) {
+    return ASTNode("Expression", token);
+  }
+}
