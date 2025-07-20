@@ -1,0 +1,97 @@
+module slibmath
+
+// 🔢 العمليات الرياضية الأساسية
+method add(float a, float b) => a + b;
+method sub(float a, float b) => a - b;
+method mul(float a, float b) => a * b;
+method div(float a, float b) => b == 0 ? null : a / b;
+
+// 📐 دوال هندسية
+method distance(float x1, float y1, float x2, float y2) {
+  return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+}
+
+method angle(float x1, float y1, float x2, float y2) {
+  return atan2(y2 - y1, x2 - x1);
+}
+
+method rotate(float x, float y, float theta) {
+  float cosT = cos(theta);
+  float sinT = sin(theta);
+  return [x * cosT - y * sinT, x * sinT + y * cosT];
+}
+
+// 📊 دوال إحصائية
+method average(list<float> values) {
+  if (values.length() == 0) return 0;
+  float sum = 0;
+  foreach (v in values) sum += v;
+  return sum / values.length();
+}
+
+method variance(list<float> values) {
+  float avg = average(values);
+  float v = 0;
+  foreach (x in values) v += pow(x - avg, 2);
+  return v / values.length();
+}
+
+method stddev(list<float> values) => sqrt(variance(values));
+
+method max(list<float> values) {
+  float m = values[0];
+  foreach (x in values) if (x > m) m = x;
+  return m;
+}
+
+method min(list<float> values) {
+  float m = values[0];
+  foreach (x in values) if (x < m) m = x;
+  return m;
+}
+
+// 🧠 دوال ذكاء اصطناعي مصغّرة
+method sigmoid(float x) => 1 / (1 + exp(-x));
+method relu(float x) => x < 0 ? 0 : x;
+
+method normalize(float value, float min, float max) {
+  if (max - min == 0) return 0;
+  return (value - min) / (max - min);
+}
+
+method classify(float score) {
+  if (score < 0.3) return "🚫 ضعيف";
+  else if (score < 0.7) return "🟡 متوسط";
+  else return "✅ قوي";
+}
+
+// 📈 دعم بياني ورياضي إضافي
+method lerp(float a, float b, float t) => a + (b - a) * t;
+method scale(float x, float inMin, float inMax, float outMin, float outMax) {
+  return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+}
+
+method isPositive(float x) => x > 0;
+method isNegative(float x) => x < 0;
+method isZero(float x) => x == 0;
+
+// 🎯 أرقام عشوائية
+method randFloat(float min, float max) {
+  float r = shell.exec("echo $RANDOM") / 32767.0;
+  return min + (max - min) * r;
+}
+
+method randInt(int min, int max) {
+  int r = shell.exec("echo $RANDOM") % (max - min + 1);
+  return r + min;
+}
+
+// 🔍 فحص وتحليل
+method withinRange(float x, float min, float max) {
+  return x >= min && x <= max;
+}
+
+method percent(float part, float whole) {
+  if (whole == 0) return 0;
+  return (part / whole) * 100;
+}
