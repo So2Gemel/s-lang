@@ -1,0 +1,49 @@
+module slibmath
+
+// 🧮 الأساسيات
+method add(float a, float b) => a + b;
+method sub(float a, float b) => a - b;
+method mul(float a, float b) => a * b;
+method div(float a, float b) => b == 0 ? null : a / b;
+
+// 📊 التحليل الإحصائي
+method average(list<float> values) {
+  if (values.length() == 0) return 0;
+  float sum = 0;
+  foreach (v in values) sum += v;
+  return sum / values.length();
+}
+
+method variance(list<float> values) {
+  float avg = average(values);
+  float v = 0;
+  foreach (x in values) v += pow(x - avg, 2);
+  return v / values.length();
+}
+
+method stddev(list<float> values) {
+  return sqrt(variance(values));
+}
+
+// 📐 الهندسة والمسافات
+method distance(float x1, float y1, float x2, float y2) {
+  return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+}
+
+method angle(float x1, float y1, float x2, float y2) {
+  return atan2(y2 - y1, x2 - x1);
+}
+
+method rotate(float x, float y, float theta) {
+  float cosT = cos(theta);
+  float sinT = sin(theta);
+  return [x * cosT - y * sinT, x * sinT + y * cosT];
+}
+
+// 📈 دوال الذكاء الاصطناعي
+method sigmoid(float x) => 1 / (1 + exp(-x));
+method relu(float x) => x < 0 ? 0 : x;
+method normalize(float value, float min, float max) {
+  if (max - min == 0) return 0;
+  return (value - min) / (max - min);
+}
