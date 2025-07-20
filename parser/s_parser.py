@@ -1,86 +1,178 @@
-class Parser {
-  list<string> tokens;
-  int index = 0;
+# s_parser.py — Smart Parser for S/S++
+import re
 
-  method tokenize(string code) {
-    tokens = code.split(" ");
-    index = 0;
-  }
+class Token:
+    def __init__(self, type_, value, line=0):
+        self.type = type_
+        self.value = value
+        self.line = line
 
-  method next() {
-    if (index < tokens.length()) {
-      return tokens[index++];
-    }
-    return null;
-  }
+    def __repr__(self):
+        return f"{self.type}:{self.value}"
 
-  method peek() {
-    if (index < tokens.length()) {
-      return tokens[index];
-    }
-    return null;
-  }
+class Lexer:
+    def __init__(self, code):
+        self.code = code
+        self.tokens = []
+        self.keywords = {"class", "method", "if", "else", "loop", "match", "case", "return", "go", "safe", "asm"}
 
-  method parse(string code) {
-    tokenize(code);
-    AST tree = new AST();
+    def tokenize(self):
+        lines = self.code.split("\n")
+        for line_num, line in enumerate(lines):
+            parts = re.findall(r"[A-Za-z_]\w*|==|!=|<=|>=|[{}():=+*/<>-]|\".*?\"|\d+", line)
+            for part in parts:
+                if part in self.keywords:
+                    self.tokens.append(Token("KEYWORD", part, line_num))
+                elif re.match(r"\d+", part):
+                    self.tokens.append(Token("NUMBER", int(part), line_num))
+                elif re.match(r"\".*?\"", part):
+                    self.tokens.append(Token("STRING", part.strip("\""), line_num))
+                elif re.match(r"[A-Za-z_]\w*", part):
+                    self.tokens.append(Token("IDENT", part, line_num))
+                else:
+                    self.tokens.append(Token("SYMBOL", part, line_num))
+        return self.tokens
 
-    while (peek() != null) {
-      tree.add(parseStatement());
-    }
+class ASTNode:
+    def __init__(self, type_, value=None, children=None):
+        self.type = type_
+        self.value = value
+        self.children = children or []
 
-    return tree;
-  }
+    def __repr__(self):
+        return f"{self.type}({self.value})"
 
-  method parseStatement() {
-    string token = next();
+class Parser:
+    def __init__(self, tokens):
+        self.tokens = tokens
+        self.index = 0
 
-    match token {
-      case "print": return parsePrint();
-      case "method": return parseMethod();
-      case "class": return parseClass();
-      case "if": return parseIf();
-      case "go": return parseGoBlock();
-      case "safe": return parseSafeBlock();
-      case "asm": return parseAsmBlock();
-      case else: return parseExpression(token);
-    }
-  }
+    def peek(self):
+        return self.tokens[self.index] if self.index < len(self.tokens) else None
 
-  method parsePrint() {
-    string value = next();
-    return ASTNode("Print", value);
-  }
+    def next(self):
+        tok = self.peek()
+        self.index += 1
+        return tok
 
-  method parseMethod() {
-    string name = next();
-    string args = next(); // Simplified
-    return ASTNode("Method", name + ":" + args);
-  }
+    def parse(self):
+        ast = []
+        while self.peek():
+            node = self.parse_statement()
+            if node:
+                ast.append(node)
+        return ast
 
-  method parseClass() {
-    string name = next();
-    return ASTNode("Class", name);
-  }
+    def parse_statement(self):
+        tok = self.peek()
+        if tok.type == "KEYWORD":
+            if tok.value == "class":
+                return self.parse_class()
+            elif tok.value == "method":
+                return self.parse_method()
+            elif tok.value == "if":
+                return self.parse_if()
+            elif tok.value == "loop":
+                return self.parse_loop()
+            elif tok.value == "match":
+                return self.parse_match()
+            elif tok.value == "go":
+                return self.parse_go()
+            elif tok.value == "safe":
+                return self.parse_safe()
+            elif tok.value == "asm":
+                return self.parse_asm()
+        elif tok.type == "IDENT":
+            return self.parse_expression()
+        return None
 
-  method parseIf() {
-    string condition = next();
-    return ASTNode("If", condition);
-  }
+    def parse_class(self):
+        self.next()  # class
+        name = self.next().value
+        self.next()  # {
+        body = []
+        while self.peek().value != "}":
+            body.append(self.parse_statement())
+        self.next()  # }
+        return ASTNode("Class", name, body)
 
-  method parseGoBlock() {
-    return ASTNode("GoBlock", "async");
-  }
+    def parse_method(self):
+        self.next()  # method
+        name = self.next().value
+        self.next()  # (
+        args = []
+        while self.peek().value != ")":
+            args.append(self.next().value)
+            if self.peek().value == ",":
+                self.next()
+        self.next()  # )
+        self.next()  # {
+        body = []
+        while self.peek().value != "}":
+            body.append(self.parse_statement())
+        self.next()  # }
+        return ASTNode("Method", name, body)
 
-  method parseSafeBlock() {
-    return ASTNode("SafeBlock", "protected");
-  }
+    def parse_if(self):
+        self.next()  # if
+        condition = self.next().value
+        self.next()  # {
+        body = []
+        while self.peek().value != "}":
+            body.append(self.parse_statement())
+        self.next()  # }
+        return ASTNode("If", condition, body)
 
-  method parseAsmBlock() {
-    return ASTNode("AsmBlock", "low-level");
-  }
+    def parse_loop(self):
+        self.next()  # loop
+        self.next()  # {
+        body = []
+        while self.peek().value != "}":
+            body.append(self.parse_statement())
+        self.next()  # }
+        return ASTNode("Loop", None, body)
 
-  method parseExpression(string token) {
-    return ASTNode("Expression", token);
-  }
-}
+    def parse_match(self):
+        self.next()  # match
+        value = self.next().value
+        self.next()  # {
+        cases = []
+        while self.peek().value != "}":
+            self.next()  # case
+            case_val = self.next().value
+            self.next()  # :
+            case_body = [self.parse_statement()]
+            cases.append(ASTNode("Case", case_val, case_body))
+        self.next()  # }
+        return ASTNode("Match", value, cases)
+
+    def parse_go(self):
+        self.next()  # go
+        self.next()  # {
+        body = []
+        while self.peek().value != "}":
+            body.append(self.parse_statement())
+        self.next()  # }
+        return ASTNode("GoBlock", None, body)
+
+    def parse_safe(self):
+        self.next()  # safe
+        self.next()  # {
+        body = []
+        while self.peek().value != "}":
+            body.append(self.parse_statement())
+        self.next()  # }
+        return ASTNode("SafeBlock", None, body)
+
+    def parse_asm(self):
+        self.next()  # asm
+        self.next()  # {
+        code = []
+        while self.peek().value != "}":
+            code.append(self.next().value)
+        self.next()  # }
+        return ASTNode("AsmBlock", " ".join(code))
+
+    def parse_expression(self):
+        ident = self.next().value
+        return ASTNode("Expression", ident)
