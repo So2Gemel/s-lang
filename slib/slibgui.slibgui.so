@@ -1,0 +1,83 @@
+module slibgui
+
+// 🪟 إنشاء نافذة رسومية
+method createWindow(string title, int width = 640, int height = 480) {
+  Window.create(title, width, height);
+  Graphics.clear(color.white);
+}
+
+// 🎨 أدوات الرسم الأولي
+method drawRect(int x, int y, int w, int h, string col = "gray") {
+  Graphics.rect(x, y, w, h, col);
+}
+
+method drawCircle(int x, int y, int r, string col = "blue") {
+  Graphics.circle(x, y, r, col);
+}
+
+method drawText(string txt, int x, int y, string col = "black") {
+  Graphics.text(txt, x, y, col);
+}
+
+method drawLine(int x1, int y1, int x2, int y2, string col = "black") {
+  Graphics.line(x1, y1, x2, y2, col);
+}
+
+// 🔘 أدوات الواجهة التفاعلية
+method createButton(string label, int x, int y, int w = 160) {
+  Button btn = new Button(label, x, y, w);
+  return btn;
+}
+
+method createInputBox(string hint, int x, int y, int w = 200) {
+  InputBox box = new InputBox(hint, x, y, w);
+  return box;
+}
+
+method createToggle(string name, int x, int y) {
+  Toggle t = new Toggle(name, x, y);
+  return t;
+}
+
+// 🧭 عناصر تحكم إضافية
+method createSlider(string title, int x, int y, int min = 0, int max = 100, int def = 50) {
+  Slider s = new Slider(title, x, y, min, max, def);
+  return s;
+}
+
+method createPanel(string name, int x, int y, int w, int h, string bg = "lightgray") {
+  Panel p = new Panel(name, x, y, w, h, bg);
+  return p;
+}
+
+// 🧩 أدوات المظهر والأنماط
+method applyTheme(string theme) {
+  ThemeEngine.apply(theme);
+}
+
+method setBackground(string col) {
+  Graphics.clear(col);
+}
+
+// 🖼️ عناصر ديناميكية
+method animateBounce(int x, int y) {
+  int dy = 0;
+  while (true) {
+    Graphics.clear("white");
+    Graphics.circle(x, y + dy, 25, "red");
+    Graphics.refresh();
+    dy += 2;
+    if (dy > 100) dy = 0;
+    sleep(30);
+  }
+}
+
+// 🧪 اختبار تفاعل سريع
+method debugUI() {
+  createWindow("🎨 تجربة واجهة");
+  drawText("📘 مرحبًا بك في S/S++ GUI", 140, 20);
+  createButton("🚀 تشغيل", 200, 80, 140);
+  createInputBox("🧠 أدخل اسمك", 180, 130, 180);
+  createToggle("🔁 فعّل الوضع التفاعلي", 180, 180);
+  Graphics.refresh();
+}
