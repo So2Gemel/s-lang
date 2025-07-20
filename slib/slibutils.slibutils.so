@@ -1,0 +1,124 @@
+module slibutils
+
+// 🔍 أدوات تحليل النصوص
+method reverse(string txt) {
+  string out = "";
+  for (int i = txt.length() - 1; i >= 0; i--) out += txt[i];
+  return out;
+}
+
+method countWords(string txt) => txt.split(" ").length();
+method isAlpha(string txt) {
+  foreach (c in txt) {
+    if (!isLetter(c)) return false;
+  }
+  return true;
+}
+
+method isNumeric(string txt) {
+  foreach (c in txt) {
+    if (!isDigit(c)) return false;
+  }
+  return true;
+}
+
+method clean(string txt) => txt.replace("\n", "").replace("\t", "").trim();
+method removeSpaces(string txt) => txt.replace(" ", "");
+method contains(string txt, string word) => txt.contains(word);
+method splitLines(string txt) => txt.split("\n");
+
+// 🧠 أدوات رقمية ومنطقية
+method isEven(int x) => x % 2 == 0;
+method isOdd(int x) => x % 2 != 0;
+
+method isPrime(int n) {
+  if (n <= 1) return false;
+  for (int i = 2; i <= sqrt(n); i++) {
+    if (n % i == 0) return false;
+  }
+  return true;
+}
+
+method clamp(int val, int min, int max) {
+  if (val < min) return min;
+  if (val > max) return max;
+  return val;
+}
+
+method inRange(int x, int min, int max) => x >= min && x <= max;
+
+// 📂 أدوات الملفات والمحتوى
+method readFile(string path) => system.read(path);
+method writeFile(string path, string data) => system.write(path, data);
+method appendFile(string path, string data) {
+  string current = system.read(path);
+  system.write(path, current + "\n" + data);
+}
+method getFileLines(string path) => system.read(path).split("\n");
+method countLines(string path) => getFileLines(path).length();
+
+method containsKeyword(string path, string word) {
+  string txt = system.read(path);
+  return txt.contains(word);
+}
+
+method listFiles(string folder) => shell.exec("ls " + folder).split("\n");
+
+// 🔐 تشفير متقدم
+method xor(string txt, string key) {
+  string out = "";
+  for (int i = 0; i < txt.length(); i++) {
+    out += chr(ord(txt[i]) ^ ord(key[i % key.length()]));
+  }
+  return out;
+}
+
+method xorHex(string txt, string key) {
+  string xored = xor(txt, key);
+  string hex = "";
+  foreach (c in xored) hex += hexcode(ord(c));
+  return hex;
+}
+
+method xorBase64(string txt, string key) {
+  string xored = xor(txt, key);
+  return base64.encode(xored);
+}
+
+method generateKey(int length) {
+  string charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
+  string key = "";
+  for (int i = 0; i < length; i++) {
+    key += charset[shell.exec("echo $RANDOM") % charset.length()];
+  }
+  return key;
+}
+
+// 🧩 تحويلات عامة
+method toUpper(string s) => s.upper();
+method toLower(string s) => s.lower();
+method merge(list<string> items, string sep) => items.join(sep);
+
+// 🎯 أدوات التطوير
+method banner(string title) {
+  print("📘== " + title + " ==");
+}
+
+method log(string msg, string type = "INFO") {
+  string icon = type == "ERROR" ? "⛔" : type == "SUCCESS" ? "✅" : "🔍";
+  print(icon + " [" + type + "] " + msg);
+}
+
+// 🧷 توليد بيانات ونتائج
+method generateList(int count, string pattern = "item") {
+  list<string> items = [];
+  for (int i = 1; i <= count; i++) {
+    items.append(pattern + "_" + i);
+  }
+  return items;
+}
+
+method randomSelect(list<any> items) {
+  int idx = shell.exec("echo $RANDOM") % items.length();
+  return items[idx];
+}
