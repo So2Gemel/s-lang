@@ -1,0 +1,53 @@
+module slibhook
+
+// 🎯 تتبع استدعاء دوال محددة
+method trace(string funcName) {
+  print("🔍 تتبع دالة: " + funcName);
+  shell.exec("strace -e call=" + funcName + " ./app.exe");
+}
+
+// 🔧 حقن هووك في دالة أو مكتبة
+method inject(string targetFunc, string replacementCode) {
+  print("🧷 Inject: " + targetFunc);
+  system.write("hooks/" + targetFunc + ".hook", replacementCode);
+}
+
+// 📦 تحليل مكتبة خارجية (.so / .dll)
+method analyzeLib(string libPath) {
+  string info = shell.exec("nm -D " + libPath + " | grep ' T '");
+  return info.split("\n");
+}
+
+// 🧠 تحليل ELF Headers (Linux)
+method analyzeELF(string path) {
+  string headers = shell.exec("readelf -h " + path);
+  return headers;
+}
+
+// 🛡️ مراقبة ملف أثناء التشغيل
+method monitorFile(string path) {
+  shell.exec("inotifywait -m " + path + " > log/hook_watch.log");
+  return "🎥 المراقبة بدأت";
+}
+
+// 📥 تسجيل استدعاءات إلى ملف
+method logCall(string funcName) {
+  system.write("logs/" + funcName + ".log", "📍 تم استدعاء: " + funcName + " @ " + system.time());
+}
+
+// 🔁 مراقبة ملف مكتبة عند التعديل
+method watchLibrary(string lib) {
+  print("🔍 مراقبة المكتبة: " + lib);
+  shell.exec("watch -n 1 ls -l " + lib);
+}
+
+// 🔍 تحليل واجهات المكتبة الخارجية
+method extractSymbols(string libPath) {
+  return shell.exec("objdump -t " + libPath + " | grep FUNC").split("\n");
+}
+
+// 🧪 اختبار هووك سريع على دالة وهمية
+method testHook() {
+  inject("processData", "override processData() { print('📎 تم حقن الدالة'); }");
+  logCall("processData");
+}
