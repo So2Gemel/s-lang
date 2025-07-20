@@ -1,0 +1,93 @@
+module slibcore
+
+// 🧠 التحويلات الأساسية
+method toInt(string s) => int(s);
+method toFloat(string s) => float(s);
+method toBool(string s) => s == "true";
+method toStr(any x) => str(x);
+method typeOf(any x) => typeof(x);
+
+// 🔐 معلومات النظام
+method systemInfo() {
+  string user = shell.exec("whoami");
+  string os = shell.exec("uname -a");
+  string cpu = shell.exec("lscpu | grep 'Model name'");
+  string ram = shell.exec("free -m | grep Mem");
+  return "👤 المستخدم: " + user + "\n🖥️ النظام: " + os + "\n⚙️ المعالج: " + cpu + "\n📦 RAM: " + ram;
+}
+
+// ⚙️ أدوات النظام المباشرة
+method exec(string cmd) => shell.exec(cmd);
+method sleep(int ms) => shell.exec("sleep " + ms / 1000);
+method clear() => shell.exec("clear");
+
+// 🧾 التشفير والتحقق
+method hash(string txt) => system.hash(txt);
+method checksum(string txt) {
+  int sum = 0;
+  foreach (c in txt) sum += ord(c);
+  return sum;
+}
+method safeExec(string cmd) {
+  if (cmd.contains("rm") || cmd.contains("eval") || cmd.contains(":(){:|:&};:")) {
+    return "⛔ أمر محظور لحماية البيئة";
+  }
+  return shell.exec(cmd);
+}
+
+// 📅 الوقت والتاريخ
+method now() => shell.exec("date");
+method timestamp() => shell.exec("date +%s");
+method uptime() => shell.exec("uptime -p");
+method timezone() => shell.exec("date +%Z");
+method dateOnly() => shell.exec("date +%Y-%m-%d");
+
+// 📂 أدوات الملفات
+method readFile(string path) => system.read(path);
+method writeFile(string path, string data) => system.write(path, data);
+method fileExists(string path) {
+  string out = shell.exec("test -f " + path + " && echo yes || echo no");
+  return out == "yes";
+}
+method appendFile(string path, string data) {
+  string old = system.read(path);
+  system.write(path, old + "\n" + data);
+}
+
+// 🧷 أدوات عشوائية وسرية
+method randInt(int min, int max) {
+  int r = shell.exec("echo $RANDOM") % (max - min + 1);
+  return r + min;
+}
+method generateKey(int length) {
+  string charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  string key = "";
+  for (int i = 0; i < length; i++) {
+    key += charset[randInt(0, charset.length() - 1)];
+  }
+  return key;
+}
+method randomColor() {
+  list<string> colors = ["red", "blue", "green", "yellow", "cyan", "magenta", "orange"];
+  return colors[randInt(0, colors.length() - 1)];
+}
+
+// 🎯 أدوات إضافية للمترجم
+method banner(string title) {
+  print("📘==== " + title + " ====");
+}
+method error(string msg) {
+  print("⛔ خطأ: " + msg);
+}
+method success(string msg) {
+  print("✅ نجاح: " + msg);
+}
+
+// 🧩 أدوات حسابية بسيطة
+method isEven(int x) => x % 2 == 0;
+method isOdd(int x) => x % 2 != 0;
+method clamp(int val, int min, int max) {
+  if (val < min) return min;
+  if (val > max) return max;
+  return val;
+}
