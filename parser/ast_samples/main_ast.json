@@ -2,21 +2,87 @@
   "type": "Program",
   "body": [
     {
-      "type": "LetDeclaration",
-      "name": "x",
-      "datatype": "int",
-      "value": {
-        "type": "Literal",
-        "value": "5"
-      }
+      "type": "ClassDeclaration",
+      "name": "Player",
+      "methods": [
+        {
+          "type": "MethodDeclaration",
+          "name": "move",
+          "params": ["dx"],
+          "body": [
+            {
+              "type": "Assignment",
+              "target": "x",
+              "expression": {
+                "type": "BinaryExpression",
+                "operator": "+",
+                "left": { "type": "Identifier", "name": "x" },
+                "right": { "type": "Identifier", "name": "dx" }
+              }
+            }
+          ]
+        },
+        {
+          "type": "MethodDeclaration",
+          "name": "draw",
+          "params": [],
+          "body": [
+            {
+              "type": "CallExpression",
+              "callee": "Graphics.rect",
+              "arguments": ["x", "y", 40, 40, "color.green"]
+            }
+          ]
+        }
+      ]
     },
     {
-      "type": "CallExpression",
-      "name": "print",
-      "args": [
+      "type": "FunctionDeclaration",
+      "name": "main",
+      "params": [],
+      "body": [
         {
-          "type": "Variable",
-          "name": "x"
+          "type": "VariableDeclaration",
+          "name": "p",
+          "init": {
+            "type": "NewExpression",
+            "class": "Player"
+          }
+        },
+        {
+          "type": "LoopStatement",
+          "body": [
+            {
+              "type": "CallExpression",
+              "callee": "p.draw",
+              "arguments": []
+            },
+            {
+              "type": "IfStatement",
+              "test": {
+                "type": "CallExpression",
+                "callee": "Input.left",
+                "arguments": []
+              },
+              "consequent": [
+                {
+                  "type": "CallExpression",
+                  "callee": "p.move",
+                  "arguments": [-5]
+                }
+              ]
+            },
+            {
+              "type": "CallExpression",
+              "callee": "Graphics.refresh",
+              "arguments": []
+            },
+            {
+              "type": "CallExpression",
+              "callee": "sleep",
+              "arguments": [16]
+            }
+          ]
         }
       ]
     }
