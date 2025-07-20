@@ -1,0 +1,28 @@
+lock {
+  stdlib-spp {
+    version      = "1.0.0"
+    author       = "So2_gemel"
+    location     = "slib/"
+    verified     = true
+    hash         = "f971d3eab9c84fb29273d4e1c5fa9f11"
+    signature    = "STD-SIGN-0xA9C3FF2D8BC72E17"
+    built        = "2025-07-20T13:10:00Z"
+    toolchain    = "sbuild-1.6.0"
+    compatibility = ["spp-runtime >= 1.5.0", "sis >= 0.9.0", "spm >= 0.6.0"]
+
+    modules = {
+      slibcore     = "slibcore.slib"            → "0xCORE-A1F1D9E3"
+      slibmath     = "slibmath.slibmath.so"     → "0xMATH-7D93B2AC"
+      slibutils    = "slibutils.slibutils.so"   → "0xUTIL-BE7F1D2A"
+      slibcrypto   = "slibcrypto.slibcrypto.so" → "0xCRYP-92AB38F1"
+      slibnet      = "slibnet.slibnet.so"       → "0xNETW-6C1E2D89"
+      slibgui      = "slibgui.slibgui.so"       → "0xGUIX-D34E927C"
+      slibai       = "slibai.slibai.so"         → "0xAIXR-81F72E19"
+      slibhook     = "slibhook.slibhook.so"     → "0xHOOK-F1C98327"
+      slibimgui    = "slibimgui.slib"           → "0xIMGUI-E7A1D349"
+      slibhud      = "slibhud.slib"             → "0xHUDD-AB12E38F"
+    }
+
+    tags = ["locked", "stdlib", "s/s++", "verified", "ready"]
+  }
+}
