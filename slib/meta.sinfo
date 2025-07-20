@@ -1,0 +1,109 @@
+meta {
+  name        = "stdlib-spp"
+  version     = "1.0.0"
+  author      = "Sanji1_Owner"
+  license     = "MIT"
+  spm         = true
+  sis         = true
+  verified    = true
+  location    = "slib/"
+  build       = "sbuild package all"
+  description = "📘 مكتبة اللغة الرسمية لـ S/S++ — تحتوي على أدوات الأنظمة، الرياضيات، الذكاء الاصطناعي، الحماية، الشبكة، الواجهات، والتحليل الديناميكي داخل بيئة موحدة."
+
+  modules = [
+    {
+      id     = "slibcore"
+      file   = "slibcore.slib"
+      status = "stable"
+      usage  = ["toInt", "systemInfo", "exec", "hash", "fileExists"]
+      doc    = "docs/modules/slibcore.md"
+      category = "system"
+    },
+    {
+      id     = "slibmath"
+      file   = "slibmath.slibmath.so"
+      status = "stable"
+      usage  = ["sigmoid", "relu", "distance", "stddev", "classify"]
+      doc    = "docs/modules/slibmath.md"
+      category = "math"
+    },
+    {
+      id     = "slibutils"
+      file   = "slibutils.slibutils.so"
+      status = "stable"
+      usage  = ["reverse", "isPrime", "xorBase64", "countLines", "generateList"]
+      doc    = "docs/modules/slibutils.md"
+      category = "utilities"
+    },
+    {
+      id     = "slibcrypto"
+      file   = "slibcrypto.slibcrypto.so"
+      status = "stable"
+      usage  = ["xor", "sign", "encryptFile", "verifySign", "generateKey"]
+      doc    = "docs/modules/slibcrypto.md"
+      category = "security"
+    },
+    {
+      id     = "slibnet"
+      file   = "slibnet.slibnet.so"
+      status = "stable"
+      usage  = ["get", "post", "download", "ping", "getIP"]
+      doc    = "docs/modules/slibnet.md"
+      category = "network"
+    },
+    {
+      id     = "slibgui"
+      file   = "slibgui.slibgui.so"
+      status = "experimental"
+      usage  = ["createWindow", "drawText", "Button", "InputBox", "Panel"]
+      doc    = "docs/modules/slibgui.md"
+      category = "gui"
+    },
+    {
+      id     = "slibai"
+      file   = "slibai.slibai.so"
+      status = "experimental"
+      usage  = ["classify", "predict", "train", "summary", "LinearModel"]
+      doc    = "docs/modules/slibai.md"
+      category = "ai"
+    },
+    {
+      id     = "slibhook"
+      file   = "slibhook.slibhook.so"
+      status = "advanced"
+      usage  = ["trace", "inject", "analyzeLib", "logCall", "monitorFile"]
+      doc    = "docs/modules/slibhook.md"
+      category = "hook"
+    },
+    {
+      id     = "slibimgui"
+      file   = "slibimgui.slib"
+      status = "experimental"
+      usage  = ["begin", "input", "button", "slider", "table"]
+      doc    = "docs/modules/slibimgui.md"
+      category = "interface"
+    },
+    {
+      id     = "slibhud"
+      file   = "slibhud.slib"
+      status = "experimental"
+      usage  = ["text", "value", "fps", "status", "dot", "frame"]
+      doc    = "docs/modules/slibhud.md"
+      category = "hud"
+    }
+  ]
+
+  tags = [
+    "S/S++",
+    "stdlib",
+    "gui",
+    "network",
+    "ai",
+    "system",
+    "crypto",
+    "utilities",
+    "hud",
+    "interface",
+    "hook"
+  ]
+}
