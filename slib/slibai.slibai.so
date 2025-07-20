@@ -1,0 +1,87 @@
+module slibai
+
+// 🧠 تصنيف بسيط بناءً على قيمة رقمية
+method classify(float score) {
+  if (score < 0.3) return "🚫 ضعيف";
+  else if (score < 0.7) return "🟡 متوسط";
+  else return "✅ قوي";
+}
+
+// 🧪 تدريب نموذجي عبر مدخلات
+method train(list<float> inputs) {
+  list<string> labels = [];
+  foreach (x in inputs) {
+    labels.append(classify(x));
+  }
+  return labels;
+}
+
+// 📈 تحليل إحصائي للتدريب
+method summary(list<float> data) {
+  float min = slibmath.min(data);
+  float max = slibmath.max(data);
+  float avg = slibmath.average(data);
+  float dev = slibmath.stddev(data);
+  return {
+    "min": min,
+    "max": max,
+    "avg": avg,
+    "stddev": dev
+  };
+}
+
+// 📚 تحليل نصي أولي
+method analyzeText(string txt) {
+  int len = txt.length();
+  int words = slibutils.countWords(txt);
+  bool alpha = slibutils.isAlpha(txt);
+  return {
+    "chars": len,
+    "words": words,
+    "alphaOnly": alpha
+  };
+}
+
+// 🧠 تنبؤ حسب sigmoid
+method predict(float x) {
+  float score = slibmath.sigmoid(x);
+  return classify(score);
+}
+
+// 🔍 مقارنة بين نموذجين
+method compare(list<float> a, list<float> b) {
+  float err = 0;
+  for (int i = 0; i < a.length(); i++) {
+    err += abs(a[i] - b[i]);
+  }
+  return err / a.length();
+}
+
+// 🎓 تدريب نموذجي بنظام مصنف ثنائي
+method binaryTrain(list<float> data) {
+  map<string, int> stats = {"positive": 0, "negative": 0};
+  foreach (x in data) {
+    if (slibmath.sigmoid(x) > 0.5) stats["positive"]++;
+    else stats["negative"]++;
+  }
+  return stats;
+}
+
+// 🧩 نموذج شبكي تجريبي (غير عصبوني بعد)
+class LinearModel {
+  float weight = 1.0;
+  float bias = 0.0;
+
+  method forward(float x) => x * weight + bias;
+
+  method train(list<float> xs, list<float> ys) {
+    float sumW = 0;
+    float sumB = 0;
+    for (int i = 0; i < xs.length(); i++) {
+      sumW += ys[i] / xs[i];
+      sumB += ys[i] - (xs[i] * weight);
+    }
+    weight = sumW / xs.length();
+    bias = sumB / xs.length();
+  }
+}
